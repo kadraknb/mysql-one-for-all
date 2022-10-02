@@ -5,13 +5,12 @@ DROP DATABASE IF EXISTS SpotifyClone;
   CREATE TABLE SpotifyClone.planos(
       id_plano INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
       `tipo_plano` VARCHAR(45) NOT NULL,
-      `valor_plano` DOUBLE NOT NULL
+      `valor_plano` DECIMAL(5,2) NOT NULL
   ) engine = InnoDB;
 
   CREATE TABLE SpotifyClone.usuarios(
       `id_usuario` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-      `nome` VARCHAR(45) NOT NULL,
-      `sobrenome` VARCHAR(100) NOT NULL,
+      `nome` VARCHAR(100) NOT NULL,
       `idade` INT(3) NOT NULL
   ) engine = InnoDB;
 
@@ -44,21 +43,12 @@ DROP DATABASE IF EXISTS SpotifyClone;
       `id_cancoe_reprodusida` INT NOT NULL AUTO_INCREMENT,
       `id_usuario` INT NOT NULL,
       `id_cancoe` INT NOT NULL,
+      `historico_de_reproducoes` DATETIME NOT NULL,
       CONSTRAINT PRIMARY KEY (`id_cancoe_reprodusida`, `id_usuario`),
         FOREIGN KEY (`id_usuario`)
         REFERENCES `SpotifyClone`.`usuarios` (`id_usuario`),
         FOREIGN KEY (`id_cancoe`)
         REFERENCES `SpotifyClone`.`cancoes` (`id_cancoe`)
-  ) engine = InnoDB;
-
-  CREATE TABLE SpotifyClone.historico_de_reproducoes(
-    `id_historico_de_reproducoes` INT NOT NULL AUTO_INCREMENT,
-    `data_reproducao` DATETIME NOT NULL,
-    `historico_de_reproducao` INT NOT NULL,
-    `id_usuario` INT NOT NULL,
-    CONSTRAINT PRIMARY KEY (`id_historico_de_reproducoes`),
-      FOREIGN KEY (`historico_de_reproducao` , `id_usuario`)
-      REFERENCES `SpotifyClone`.`cancoes_reprodusidas` (`id_cancoe_reprodusida` , `id_usuario`)
   ) engine = InnoDB;
 
     CREATE TABLE SpotifyClone.plano_usuario(
@@ -91,18 +81,18 @@ DROP DATABASE IF EXISTS SpotifyClone;
     ('pessoal', '6.99'),
     ('familiar', '7.99');
 
-  INSERT INTO SpotifyClone.usuarios (nome, sobrenome, idade)
+  INSERT INTO SpotifyClone.usuarios (nome, idade)
   VALUES
-    ('Barbara', 'Liskov', '82'),
-    ('Robert', 'Cecil Martin', '58'),
-    ('Ada', 'Lovelace', '37'),
-    ('Martin', 'Fowler', '46'),
-    ('Sandi', 'Metz', '58'),
-    ('Paulo', 'Freire', '19'),
-    ('Bell', 'Hooks', '26'),
-    ('Christopher', 'Alexander', '85'),
-    ('Judith', 'Butler', '45'),
-    ('Jorge', 'Amado', '58');
+    ('Barbara Liskov', '82'),
+    ('Robert Cecil Martin', '58'),
+    ('Ada Lovelace', '37'),
+    ('Martin Fowler', '46'),
+    ('Sandi Metz', '58'),
+    ('Paulo Freire', '19'),
+    ('Bell Hooks', '26'),
+    ('Christopher Alexander', '85'),
+    ('Judith Butler', '45'),
+    ('Jorge Amado', '58');
 
   INSERT INTO SpotifyClone.artistas (artista)
   VALUES
@@ -126,54 +116,35 @@ DROP DATABASE IF EXISTS SpotifyClone;
 
   INSERT INTO SpotifyClone.cancoes (cancao, duracao_segundos, id_album)
   VALUES
-    1('BREAK MY SOUL', '279', '1'),
-    2('VIRGO’S GROOVE', '269', '1'),
-    3('ALIEN SUPERSTAR', '116', '1'),
-    4('Don’t Stop Me Now', '203', '2'),
-    5('Under Pressure', '152', '3'),
-    6('Como Nossos Pais', '105', '4'),
-    7('O Medo de Amar é o Medo de Ser Livre', '207', '5'),
-    8('Samba em Paris', '267', '6'),
-    9('The Bard’s Song', '244', '7'),
-    0('Feeling Good', '100', '8');
+    ('BREAK MY SOUL', '279', '1'),
+    ('VIRGO’S GROOVE', '369', '1'),
+    ('ALIEN SUPERSTAR', '116', '1'),
+    ('Don’t Stop Me Now', '203', '2'),
+    ('Under Pressure', '152', '3'),
+    ('Como Nossos Pais', '105', '4'),
+    ('O Medo de Amar é o Medo de Ser Livre', '207', '5'),
+    ('Samba em Paris', '267', '6'),
+    ('The Bard’s Song', '244', '7'),
+    ('Feeling Good', '100', '8');
 
-  INSERT INTO SpotifyClone.cancoes_reprodusidas (id_usuario, id_cancoe)
+  INSERT INTO SpotifyClone.cancoes_reprodusidas (id_usuario, id_cancoe, historico_de_reproducoes)
   VALUES
-    ('1', '8'),
-    ('1', '2'),
-    ('1', '10'),
-    ('2', '10'),
-    ('2', '7'),
-    ('3', '10'),
-    ('3', '2'),
-    ('4', '8'),
-    ('5', '8'),
-    ('5', '5'),
-    ('6', '7'),
-    ('6', '1'),
-    ('7', '4'),
-    ('8', '4'),
-    ('9', '9'),
-    ('10', '3');
-
-  INSERT INTO SpotifyClone.historico_de_reproducoes (data_reproducao, id_usuario, historico_de_reproducao)
-  VALUES
-    ('2022-02-28 10:45:55','1', '1'),
-    ('2020-05-02 05:30:35','1', '2'),
-    ('2020-03-06 11:22:33','1', '3'),
-    ('2022-08-05 08:05:17','2', '4'),
-    ('2020-01-02 07:40:33','2', '5'),
-    ('2020-11-13 16:55:13','3', '6'),
-    ('2020-12-05 18:38:30','3', '7'),
-    ('2021-08-15 17:10:10','4', '8'),
-    ('2022-01-09 01:44:33','5', '9'),
-    ('2020-08-06 15:23:43','5', '10'),
-    ('2017-01-24 00:31:17','6', '11'),
-    ('2017-10-12 12:35:20','6', '12'),
-    ('2011-12-15 22:30:49','7', '13'),
-    ('2012-03-17 14:56:41','8', '14'),
-    ('2022-02-24 21:14:22','9', '15'),
-    ('2015-12-13 08:30:22','10', '16');
+    ('1', '8', '2022-02-28 10:45:55'),
+    ('1', '2', '2020-05-02 05:30:35'),
+    ('1', '10', '2020-03-06 11:22:33'),
+    ('2', '10', '2022-08-05 08:05:17'),
+    ('2', '7', '2020-01-02 07:40:33'),
+    ('3', '10', '2020-11-13 16:55:13'),
+    ('3', '2', '2020-12-05 18:38:30'),
+    ('4', '8', '2021-08-15 17:10:10'),
+    ('5', '8', '2022-01-09 01:44:33'),
+    ('5', '5', '2020-08-06 15:23:43'),
+    ('6', '7', '2017-01-24 00:31:17'),
+    ('6', '1', '2017-10-12 12:35:20'),
+    ('7', '4', '2011-12-15 22:30:49'),
+    ('8', '4', '2012-03-17 14:56:41'),
+    ('9', '9', '2022-02-24 21:14:22'),
+    ('10', '3', '2015-12-13 08:30:22');
 
   INSERT INTO SpotifyClone.plano_usuario (id_usuario, id_plano, data_assinatura)
   VALUES
@@ -199,10 +170,8 @@ DROP DATABASE IF EXISTS SpotifyClone;
     ('4', '4'),
     ('5', '5'),
     ('5', '6'),
-    ('6', '7'),
+    ('6', '6'),
     ('6', '1'),
-    ('7', '7'),
+    ('7', '6'),
     ('9', '3'),
     ('10', '2');
-Error Code: 1452. Cannot add or update a child row: a foreign key constraint fails 
-(`SpotifyClone`.`seguindo_artistas`, CONSTRAINT `seguindo_artistas_ibfk_2` FOREIGN KEY (`id_artista`) REFERENCES `artistas` (`id_artista`))

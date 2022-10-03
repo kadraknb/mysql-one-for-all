@@ -1,4 +1,4 @@
-SELECT cancao as nome, count(cr.id_cancoe)
+SELECT cancao as nome, count(cr.id_cancoe) as reproducoes
 FROM SpotifyClone.cancoes as c
 inner join SpotifyClone.plano_usuario as pu
 on pu.id_plano = 1 or pu.id_plano = 3

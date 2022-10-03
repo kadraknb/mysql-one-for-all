@@ -9,9 +9,14 @@ DROP DATABASE IF EXISTS SpotifyClone;
   ) engine = InnoDB;
 
   CREATE TABLE SpotifyClone.usuarios(
-      `id_usuario` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+      `id_usuario` INT NOT NULL AUTO_INCREMENT,
       `nome` VARCHAR(100) NOT NULL,
-      `idade` INT(3) NOT NULL
+      `idade` INT(3) NOT NULL,
+      `id_plano` INT NOT NULL,
+      `data_assinatura` DATE NOT NULL,
+      CONSTRAINT PRIMARY KEY (`id_usuario`),
+      FOREIGN KEY (`id_plano`)
+      REFERENCES `SpotifyClone`.`planos` (`id_plano`)
   ) engine = InnoDB;
 
   CREATE TABLE SpotifyClone.artistas(
@@ -51,18 +56,6 @@ DROP DATABASE IF EXISTS SpotifyClone;
         REFERENCES `SpotifyClone`.`cancoes` (`id_cancoe`)
   ) engine = InnoDB;
 
-    CREATE TABLE SpotifyClone.plano_usuario(
-    `id_plano_usuario` INT NOT NULL AUTO_INCREMENT,
-    `id_usuario` INT NOT NULL,
-    `id_plano` INT NOT NULL,
-    `data_assinatura` DATE NOT NULL,
-    CONSTRAINT PRIMARY KEY (`id_plano_usuario`),
-      FOREIGN KEY (`id_usuario`)
-      REFERENCES `SpotifyClone`.`usuarios` (`id_usuario`),
-      FOREIGN KEY (`id_plano`)
-      REFERENCES `SpotifyClone`.`planos` (`id_plano`)
-  ) engine = InnoDB;
-
     CREATE TABLE SpotifyClone.seguindo_artistas(
       `id_seguindo_artista` INT NOT NULL AUTO_INCREMENT,
       `id_usuario` INT NOT NULL,
@@ -81,18 +74,18 @@ DROP DATABASE IF EXISTS SpotifyClone;
     ('pessoal', '6.99'),
     ('familiar', '7.99');
 
-  INSERT INTO SpotifyClone.usuarios (nome, idade)
+  INSERT INTO SpotifyClone.usuarios (nome, idade, id_plano, data_assinatura)
   VALUES
-    ('Barbara Liskov', '82'),
-    ('Robert Cecil Martin', '58'),
-    ('Ada Lovelace', '37'),
-    ('Martin Fowler', '46'),
-    ('Sandi Metz', '58'),
-    ('Paulo Freire', '19'),
-    ('Bell Hooks', '26'),
-    ('Christopher Alexander', '85'),
-    ('Judith Butler', '45'),
-    ('Jorge Amado', '58');
+    ('Barbara Liskov', '82', '1', '2019-10-20'),
+    ('Robert Cecil Martin', '58', '1', '2017-01-06'),
+    ('Ada Lovelace', '37', '4', '2017-12-30'),
+    ('Martin Fowler', '46', '4', '2017-01-17'),
+    ('Sandi Metz', '58', '4', '2018-04-29'),
+    ('Paulo Freire', '19', '2', '2018-02-14'),
+    ('Bell Hooks', '26', '2', '2018-01-05'),
+    ('Christopher Alexander', '85', '3', '2020-05-13'),
+    ('Judith Butler', '45', '3', '2019-06-05'),
+    ('Jorge Amado', '58', '3', '2017-02-17');
 
   INSERT INTO SpotifyClone.artistas (artista)
   VALUES
@@ -145,19 +138,6 @@ DROP DATABASE IF EXISTS SpotifyClone;
     ('8', '4', '2012-03-17 14:56:41'),
     ('9', '9', '2022-02-24 21:14:22'),
     ('10', '3', '2015-12-13 08:30:22');
-
-  INSERT INTO SpotifyClone.plano_usuario (id_usuario, id_plano, data_assinatura)
-  VALUES
-    ('1', '1', '2019-10-20'),
-    ('2', '1', '2017-01-06'),
-    ('3', '4', '2017-12-30'),
-    ('4', '4', '2017-01-17'),
-    ('5', '4', '2018-04-29'),
-    ('6', '2', '2018-02-14'),
-    ('7', '2', '2018-01-05'),
-    ('8', '3', '2019-06-05'),
-    ('9', '3', '2020-05-13'),
-    ('10', '3', '2017-02-17');
 
   INSERT INTO SpotifyClone.seguindo_artistas (id_usuario, id_artista)
   VALUES
